@@ -7,16 +7,16 @@ import json
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Loading environment variables from .env file
 load_dotenv()
 
-# Retrieve the MongoDB URI from the environment variable
+# Retrieving my MongoDB URI from the environment variable
 mongo_uri = os.environ.get('MONGO_URI')
 
 if not mongo_uri:
     raise ValueError('MONGO_URI is not set in the .env file')
 
-# Create a custom JSON encoder class
+# Custom JSON encoder class
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
@@ -44,7 +44,7 @@ def get_files():
     files = list(mongo.db.fs.files.find())
     serialized_files = [{'_id': str(file['_id']), 'filename': file['filename']} for file in files]
     
-    # Include the download URL for each file
+    #Download URL for each file
     for file in serialized_files:
         file['download_url'] = f'/file/{file["_id"]}'
     
